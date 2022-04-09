@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+<!-- 		<bean name="/first" class="cn.edu.xit.Controller.First"></bean>
+ -->	
+ <!-- !!!!!!!同时 -->
+ <!-- !!!(其实是根据springmvc.xml文件的顺序来的)在我们给浏览器输入路径点击enter键的4个同时:1.浏览器读取web.xml立马响应并通过过滤器映射到这个项目的springmvc.xml文件 2.spring自动生成Model实例   3.web.xml文件里面的<context-param>标签里面的classpath配置传给了springmvc.xml(springmvc能根据程序调用)
+  4.spring能够让controller类进行跳转到jsp文件,然后jsp进行资源请求的配置后,(返回字符串(jsp的名称))springmvc自动创建视图类为该jsp文件加上前后缀,最后显示页面内容-->
+ 
+ 
+ <!-- MVC ：model数据添加  view视图   controller控制类(前面两者通过controller进行联系) -->
+ <!-- 在WEB-INF里面的jsp界面不能直接通过启动Tomcat进行打开,应该通过spring的xml文件进行内部配置路径
+ 
+ (但在浏览器的路径中是项目名+controller类里面的requestmapping注解的映射路径) -->
+ <!-- 有注解的地方都需要注解配置 -->
+        <!-- 注解配置(先context:component-scan扫描,再进行注解配置) -->
+        <!-- 创建controller类(在springmvc.xml创建)(理解过程:创建完直接到controller类的方法再分析流程) -->
+        
+		<context:component-scan base-package="cn.edu.xit.controller"></context:component-scan>
+		
+		<!-- 注解驱动 (先驱动，再注解配置)-->
+		<mvc:annotation-driven></mvc:annotation-driven>
+		<!-- location元素表示webapp目录下的static包下的所有文件；
+             mapping元素表示以/static开头的所有请求路径，如/static/a 或者/static/a/b；
+                              该配置的作用是：DispatcherServlet不会拦截以/static开头的所有请求路径，并当作静态资源
+                               交由Servlet处理。 -->
+                               <!-- 说明:这个静态资源的路径,并指向location包下面的文件 (告诉mvc对这个静态资源进行放行)-->
+                               <!-- location属性(Springmvc会自动查找文件夹)(当location加入${pageContext.request.contextPath}也能行) -->
+                               <!--根据mapping的路径资源从location里面的文件(springmvc能够自动查找文件夹(不管父或子文件夹)),mapping路径是指在项目路径下(默认)只要有/css/**(**指的是任意资源文件)结尾的都在项目路径下找出这个文件里找出对应的资源 -->
+        <!--即:根据所命名的项目路径下的资源路径查找项目路径下的文件夹所匹配的资源  -->
+		<mvc:resources location="/css/" mapping="/css/**"></mvc:resources>
+		<mvc:resources location="/js/" mapping="/js/**"></mvc:resources>
+		<mvc:resources location="/image/" mapping="/image/**"></mvc:resources>
+		
+		<!-- 拦截器 -->
+		<mvc:interceptors>
+        <mvc:interceptor>
+        
+<!--         先设置拦截方式,再进行创建拦截器
+ -->    <mvc:mapping path="/**"/>
+<!--         将静态资源设置不拦截 
+ -->    
+        <mvc:exclude-mapping path="/css/**"/>
+        <mvc:exclude-mapping path="/js/**"/>
+        <mvc:exclude-mapping path="/image/**"/>
+        <bean class="cn.edu.xit.LoginInterceptor.LoginInterceptor"></bean>
+        </mvc:interceptor>
+        </mvc:interceptors> 
+        
+		<!-- spring的xml文件进行视图配置(内部配置路径) -->
+ <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+ <property name="prefix" value="/WEB-INF/jsp/"></property>
+ <property name="suffix" value=".jsp"></property>
+ </bean>
+
+</beans>

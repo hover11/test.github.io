@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.edu.xit.mapper.MessageMapper">
+<!--根据userid查找出数据	-->
+<select id="findMessageByUserIdToPerson" parameterType="String" resultType="cn.edu.xit.po.Message">
+	select * from message where 1=1
+	<if test="userid!=null and userid!=''">
+		and userid=#{userid}
+	</if>
+</select>
+<!--删除数据(要组合删除,不然当学号相同时，会将数据全部删除)-->
+<delete id="deleteMessageByUserId" parameterType="String" >
+delete from message where userid=#{userid} and id=#{id}
+</delete>
+<!-- 根据userid模糊查询-->
+<select id="findMessageByUserid" parameterType="String" resultType="cn.edu.xit.po.Message">
+	select * from message where 1=1
+	<if test="userid!=null and userid!=''">
+		and userid like #{userid}"%"
+	</if>
+</select>
+<!--新增留言-->
+<insert id="addMessage" parameterType="cn.edu.xit.po.Message">
+	insert into message(userid,title,introduce,datetime) values(#{userid},#{title},#{introduce},#{datetime})
+</insert>
+</mapper>

@@ -1,0 +1,26 @@
+@CHARSET "UTF-8";
+.menu{
+	width: 1250px;
+	height: 40px;
+	background: #E6E6FA;
+	margin: 0 auto;
+	width: 100%;
+	
+}
+.menu>span:first-child{
+	margin-left: 165px
+}
+
+.menu>span{
+	width: 140px;
+	color: black;
+	line-height: 40px;
+	margin-left: 90px;
+	text-align: center;
+}
+.menu>span:hover{
+	cursor: pointer;;
+	background: white;
+	border: 2px solid #171616f2;
+	border-radius: 25px;
+}

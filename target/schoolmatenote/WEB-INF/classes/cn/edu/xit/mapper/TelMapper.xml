@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 命名空间是包名+文件名 -->
+<mapper namespace="cn.edu.xit.mapper.TelMapper">
+<!--此处补充代码，实现 findTelByUserIdandPwd -->
+
+
+
+
+<!-- 此处补充代码，实现 findTelephoneNoteByMany-->
+
+ <select id="findTelephoneNoteByMany" parameterType="String" resultType="cn.edu.xit.po.TelNote">
+
+select * from telephonenote where 1=1
+<if test="userid!=null and userid!=''">
+and userid like #{userid} '%'
+</if>
+</select>
+<!-- 此处补充代码，实现 findTelephoneNoteByUserId-->
+<select id="findTelephoneNoteByUserId" parameterType="String"	resultType="cn.edu.xit.po.TelNote">
+
+	select * from telephonenote where userid=#{userid}
+	
+	
+
+</select>
+<!--此处补充代码，实现 findTelephoneNote -->
+
+
+<!-- 此处补充代码，实现 deleteTelephoneNote -->
+
+<delete id="deleteTelephoneNote" parameterType="String" >
+
+delete from telephonenote where userid=#{userid}
+</delete>
+
+
+<!-- 此处补充代码，实现addTelephoneNote -->
+
+ <insert id="addTelephoneNote" parameterType="cn.edu.xit.po.TelNote">
+
+insert into telephonenote (userid,username,workplace,telephoneaddress,telephone,emailword,qq)values(#{userid},#{username},#{workplace},#{telephoneaddress},#{telephone},#{emailword},#{qq})
+</insert> 
+
+<!-- 此处补充代码，实现 updateTelephoneNote -->
+
+ <update id="updateTelephoneNote" parameterType="cn.edu.xit.po.TelNote">
+update telephonenote set username=#{username},workplace=#{workplace},telephoneaddress=#{telephoneaddress},telephone=#{telephone},emailword=#{emailword},qq=#{qq} where userid=#{userid}
+
+</update> 
+
+
+</mapper>

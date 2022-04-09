@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.edu.xit.mapper.SchoolMateMapper">
+<!--管理员登录	-->   
+	<select id="findAdmit" parameterType="String" resultType="cn.edu.xit.po.Admit" >
+		select * from manager where userid=#{userid} and password=#{password}
+	</select>
+
+
+<!--根据用户名和密码查找用户(通过注解配置)	-->
+	<select id="findUserByUseridandPwd" parameterType="String" resultType="cn.edu.xit.po.SchoolMate">
+		select * from schoolmatenote where userid=#{userid} and password=#{password}
+	</select>
+<!--根据userid查找用户-->
+<!--数据库的string和xml文件parameterType的Integer可以兼容(前提:如果varchar类型值是数字之类的，可以转成int，如果是字符之类的就转不了)-->
+    <select id="findUserByUserId" parameterType="String" resultType="cn.edu.xit.po.SchoolMate">
+    	select * from schoolmatenote where userid=#{userid}
+    </select>
+<!--删除用户-->
+	<delete id="deleteUserById" parameterType="String">
+		delete from  schoolmatenote where userid=#{userid}
+	</delete>
+<!--增加用户	-->
+	<insert id="addUser" parameterType="cn.edu.xit.po.SchoolMate" >
+		insert into schoolmatenote(userid,username,password,work,telephone,email,emailword,grade,graduateschool,graduatetime) values(#{userid},#{username},#{password},#{work},#{telephone},#{email},#{emailword},#{grade},#{graduateschool},#{graduatetime})
+	</insert>
+<!--根据多条件查询	-->
+	<select id="findUserByManyCondition" parameterType="String" resultType="cn.edu.xit.po.SchoolMate">
+		select * from schoolmatenote where 1=1
+		<if test="userid!=null and userid!=''">
+			and userid like #{userid}"%"
+		</if>
+		<if test="work!=null and work!='请选择' and work!=''">
+			and work=#{work}
+		</if>
+<!--问题:controller的参数当没有传参时是为null还是''?-->
+		<if test="graduateschool!=null and graduateschool!='请选择' and graduateschool!=''">
+			and graduateschool=#{graduateschool}
+		</if>
+	</select>
+	
+<!--根据页面显示进行更新数据	-->
+	<update id="updateUser" parameterType="cn.edu.xit.po.SchoolMate">
+		update schoolmatenote set username=#{username},work=#{work},telephone=#{telephone},email=#{email},emailword=#{emailword},graduateschool=#{graduateschool},graduatetime=#{graduatetime} where userid=#{userid}
+	</update>
+	
+</mapper>
